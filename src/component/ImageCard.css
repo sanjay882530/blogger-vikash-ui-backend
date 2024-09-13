@@ -1,0 +1,43 @@
+/* Main container for the card */
+
+  
+  /* Circle at the top middle of the rectangle */
+  .circle {
+    
+    position: absolute;
+    top: -50px; /* Moves the circle above the rectangle */
+    left: 50%;
+    transform: translateX(-50%); /* Centers the circle horizontally */
+    width: 200px;
+    height: 200px;
+    background-color: white;
+    border: 3px solid #dfc3c3; /* Circle border */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Image inside the circle */
+  .circle-image {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+  }
+  
+  /* Rectangle area with description */
+  .rectangle {
+    margin-top: 60px; /* Pushes content below the circle */
+    padding: 20px;
+  }
+  
+  /* Description text */
+  .description {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .textcolumn{
+    margin-top: 60px; /* Pushes content below the circle */
+    padding: 20px;
+  }

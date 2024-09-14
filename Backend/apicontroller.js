@@ -9,7 +9,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 // Enable CORS for all origins
 const allowedOrigins = [
-  //"https://blogger-vikash-ui-backend.vercel.app",
+  "https://blogger-vikash-ui-backend.vercel.app",
   "https://vikashblog.up.railway.app",
   "http://localhost:5173",
 ];

@@ -8,6 +8,7 @@ export default defineConfig({
       "/api": {
         target: "https://vikashblog.up.railway.app",
         secure: false,
+        changeOrigin: true,
       },
     },
   },

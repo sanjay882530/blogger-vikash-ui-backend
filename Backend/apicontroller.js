@@ -8,7 +8,10 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 // Enable CORS for all origins
-const allowedOrigins = ["http://localhost:3000/api", "http://localhost:5173"];
+const allowedOrigins = [
+  "https://blogger-vikash-ui-backend.vercel.app",
+  "http://localhost:5173",
+];
 app.use(
   cors({
     origin: function (origin, callback) {

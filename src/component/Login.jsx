@@ -11,10 +11,10 @@ import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext";
-// import dotenv from "dotenv";
-// dotenv.config();
-// const VITE_URL =
-//   process.env.VITE_BACKEND_URL || "https://vikashblog.up.railway.app";
+import dotenv from "dotenv";
+dotenv.config();
+const VITE_URL =
+  process.env.VITE_BACKEND_URL || "https://vikashblog.up.railway.app";
 
 function Login() {
   const [username, setUsername] = useState("");

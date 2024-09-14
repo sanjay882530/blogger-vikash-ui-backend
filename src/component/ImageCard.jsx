@@ -25,9 +25,8 @@ function ImageCard() {
             <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100"></div>
             <br />
             <p className="text-s">
-              I am Sanjay Prasad Verma, and I work as a full-stack developer,
-              specializing in ReactJS for frontend development and either
-              Node.js or Java for backend development.
+              I am Vikash Kumar Verma, and I work as a Lectural, specializing in
+              Electronic.
             </p>
           </MDBCol>
         </MDBRow>

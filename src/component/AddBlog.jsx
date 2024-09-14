@@ -1,23 +1,24 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from "react";
 import {
   MDBBtn,
   MDBContainer,
   MDBCard,
   MDBRow,
-  MDBInput
-} from 'mdb-react-ui-kit';
-import axios from 'axios';
-import LeftHeader from './LeftHeader';
-import UserContext from '../context/UserContext';
-
+  MDBInput,
+} from "mdb-react-ui-kit";
+import axios from "axios";
+import LeftHeader from "./LeftHeader";
+import UserContext from "../context/UserContext";
+const VITE_URL =
+  import.meta.env.VITE_BACKEND_URL || "https://vikashblog.up.railway.app";
 function AddBlog() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [full_description, setFull_Description] = useState('');
-  const [author, setAuthor] = useState('');
-  const [image_url, setImage_Url] = useState('');
-  const [message, setMessage] = useState({ text: '', color: '' });
-  const [user_id, setUser_id] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [full_description, setFull_Description] = useState("");
+  const [author, setAuthor] = useState("");
+  const [image_url, setImage_Url] = useState("");
+  const [message, setMessage] = useState({ text: "", color: "" });
+  const [user_id, setUser_id] = useState("");
   const { user } = useContext(UserContext);
   const [username] = useState(user); // Set username from context initially
 
@@ -25,16 +26,18 @@ function AddBlog() {
   const getUserId = async () => {
     try {
       if (username) {
-        const response = await axios.post('/api/getUserId', { username });
+        const response = await axios.post(`${VITE_URL}/api/getUserId`, {
+          username,
+        });
         if (response.status === 200) {
           setUser_id(response.data.user_id);
-          setMessage({ text: '', color: 'green' });
+          setMessage({ text: "", color: "green" });
         } else {
-          setMessage({ text: 'No record found!', color: 'red' });
+          setMessage({ text: "No record found!", color: "red" });
         }
       }
     } catch (error) {
-      setMessage({ text: 'An error occurred', color: 'red' });
+      setMessage({ text: "An error occurred", color: "red" });
     }
   };
 
@@ -47,40 +50,46 @@ function AddBlog() {
     e.preventDefault();
     try {
       if (user_id) {
-        const response = await axios.post('/api/addBlog', {
+        const response = await axios.post(`${VITE_URL}/api/addBlog`, {
           title,
           description,
           full_description,
           image_url,
           user_id,
-          author
+          author,
         });
         if (response.status === 200) {
-          setMessage({ text: response.data.message, color: 'green' });
+          setMessage({ text: response.data.message, color: "green" });
         } else {
-          setMessage({ text: response.data.message, color: 'red' });
+          setMessage({ text: response.data.message, color: "red" });
         }
       } else {
-        setMessage({ text: 'User ID not available', color: 'red' });
+        setMessage({ text: "User ID not available", color: "red" });
       }
     } catch (error) {
-      setMessage({ text: error.response?.data?.message || 'An error occurred', color: 'red' });
+      setMessage({
+        text: error.response?.data?.message || "An error occurred",
+        color: "red",
+      });
     }
   };
 
   return (
     <>
-      <MDBContainer fluid className="d-flex vh-100 p-0 mt-0.5"> 
-        <div className="d-flex w-100" style={{ gap: '20px' }}>
+      <MDBContainer fluid className="d-flex vh-100 p-0 mt-0.5">
+        <div className="d-flex w-100" style={{ gap: "20px" }}>
           {/* LeftHeader */}
-          <div style={{ flex: '0 0 25%', padding: 0, margin: 0 }}>
+          <div style={{ flex: "0 0 25%", padding: 0, margin: 0 }}>
             <LeftHeader />
           </div>
 
           {/* Form section */}
-          <div style={{ flex: '1' }}>
+          <div style={{ flex: "1" }}>
             <form onSubmit={handleSubmit}>
-              <MDBCard className="p-4 mt-2" style={{ maxWidth: '600px', width: '100%' }}>
+              <MDBCard
+                className="p-4 mt-2"
+                style={{ maxWidth: "600px", width: "100%" }}
+              >
                 <MDBRow className="align-items-center">
                   <h2 className="text-uppercase text-center mb-5">Add Blog</h2>
 
@@ -141,11 +150,17 @@ function AddBlog() {
                     required
                   />
 
-                  <MDBBtn type="submit" className="mb-4 w-100 gradient-custom-4" size="lg">
+                  <MDBBtn
+                    type="submit"
+                    className="mb-4 w-100 gradient-custom-4"
+                    size="lg"
+                  >
                     Add
                   </MDBBtn>
 
-                  {message.text && <p style={{ color: message.color }}>{message.text}</p>}
+                  {message.text && (
+                    <p style={{ color: message.color }}>{message.text}</p>
+                  )}
                 </MDBRow>
               </MDBCard>
             </form>

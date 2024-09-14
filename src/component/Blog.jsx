@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   MDBCard,
   MDBContainer,
@@ -7,47 +7,51 @@ import {
   MDBCardText,
   MDBCardImage,
   MDBRow,
-  MDBCol
-} from 'mdb-react-ui-kit';
-import axios from 'axios';
-
+  MDBCol,
+} from "mdb-react-ui-kit";
+import axios from "axios";
+const VITE_URL =
+  import.meta.env.VITE_BACKEND_URL || "https://vikashblog.up.railway.app";
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
-  const id = localStorage.getItem('blogId');
- 
-  console.log('blog id blog component:', id);
+  const id = localStorage.getItem("blogId");
+
+  console.log("blog id blog component:", id);
 
   // Fetch blogs when the component mounts or when the id changes
   useEffect(() => {
     const fetchBlogs = () => {
-      console.log('id:', id);
-      axios.get(`/api/getBlogById/${id}`)  // Use template literal to insert id into URL
-        .then(response => {
+      console.log("id:", id);
+      axios
+        .get(`${VITE_URL}/api/getBlogById/${id}`) // Use template literal to insert id into URL
+        .then((response) => {
           setBlogs(response.data.blogs || []); // Handle response data properly
         })
-        .catch(error => {
-          console.error('There was an error fetching the blogs!', error);
+        .catch((error) => {
+          console.error("There was an error fetching the blogs!", error);
         });
     };
 
     if (id) {
       fetchBlogs(); // Call fetchBlogs only if id is present
     }
-  }, [id]);  // Depend on id to trigger the effect when id changes
+  }, [id]); // Depend on id to trigger the effect when id changes
 
   return (
     <MDBContainer className="d-flex justify-content-center align-items-center vh-70">
       <MDBRow className="w-100">
         {blogs.length > 0 ? (
-          blogs.map(blog => (
-            <MDBCol md="12" key={blog.id} className="mb-3"> {/* Full width column */}
+          blogs.map((blog) => (
+            <MDBCol md="12" key={blog.id} className="mb-3">
+              {" "}
+              {/* Full width column */}
               <MDBCard className="shadow-sm">
-              <MDBCardImage
-                src={blog.image_url}
-                position="top"
-                alt={blog.title}
-                style={{ maxHeight: '400px', objectFit: 'cover' }} 
-              />
+                <MDBCardImage
+                  src={blog.image_url}
+                  position="top"
+                  alt={blog.title}
+                  style={{ maxHeight: "400px", objectFit: "cover" }}
+                />
 
                 <MDBCardBody>
                   <MDBCardTitle>{blog.title}</MDBCardTitle>

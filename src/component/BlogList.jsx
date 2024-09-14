@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   MDBCard,
   MDBCardBody,
@@ -7,43 +7,43 @@ import {
   MDBCardImage,
   MDBRow,
   MDBCol,
-  MDBBtn
-} from 'mdb-react-ui-kit';
-import axios from 'axios'; // Import axios
-import { Link } from 'react-router-dom';
-
-const BlogList = ({ }) => {
+  MDBBtn,
+} from "mdb-react-ui-kit";
+import axios from "axios"; // Import axios
+import { Link } from "react-router-dom";
+const VITE_URL =
+  import.meta.env.VITE_BACKEND_URL || "https://vikashblog.up.railway.app";
+const BlogList = ({}) => {
   const [blogs, setBlogs] = useState([]);
-  
-  
-  
+
   // Fetch blogs only when the component mounts
   useEffect(() => {
     const fetchBlogs = () => {
-      axios.post('/api/getBlogs')
-        .then(response => {
+      axios
+        .post(`${VITE_URL}/api/getBlogs`)
+        .then((response) => {
           setBlogs(response.data.blogs || []);
         })
-        .catch(error => {
-          console.error('There was an error fetching the blogs!', error);
+        .catch((error) => {
+          console.error("There was an error fetching the blogs!", error);
         });
     };
     fetchBlogs();
   }, []);
 
   const handleSubmit = (id) => {
-    localStorage.setItem('blogId', id);
+    localStorage.setItem("blogId", id);
   };
 
   return (
     <MDBRow className="m-3 d-flex justify-content-center">
       {blogs.length > 0 ? (
-        blogs.map(blog => (
+        blogs.map((blog) => (
           <MDBCol md="4" key={blog.id} className="mb-3">
             <MDBCard className="shadow-sm">
               <MDBCardImage
                 src={blog.image_url}
-                position='top'
+                position="top"
                 alt={blog.title}
               />
               <MDBCardBody>
@@ -53,12 +53,18 @@ const BlogList = ({ }) => {
                   <small className="text-muted">Author: {blog.author}</small>
                 </MDBCardText>
                 {blog?.id === blog.user_id && (
-                  <MDBBtn 
+                  <MDBBtn
                     onClick={() => handleSubmit(blog.id)} // Pass blog.id when clicked
-                    color="primary" 
+                    color="primary"
                     size="sm"
                   >
-                    <Link to={`/blog/${blog.id}`} style={{ color: 'white', textDecoration: 'none' }}> Read More </Link>
+                    <Link
+                      to={`/blog/${blog.id}`}
+                      style={{ color: "white", textDecoration: "none" }}
+                    >
+                      {" "}
+                      Read More{" "}
+                    </Link>
                   </MDBBtn>
                 )}
               </MDBCardBody>

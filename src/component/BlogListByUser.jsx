@@ -11,7 +11,8 @@ import {
 import axios from "axios";
 import UserContext from "../context/UserContext";
 import LeftHeader from "./LeftHeader";
-
+const VITE_URL =
+  import.meta.env.VITE_BACKEND_URL || "https://vikashblog.up.railway.app";
 const BlogListByUser = () => {
   const [blogs, setBlogs] = useState([]);
   const [user_id, setUser_id] = useState("");
@@ -21,7 +22,9 @@ const BlogListByUser = () => {
   const getUserId = async () => {
     if (!user_id && username) {
       try {
-        const response = await axios.post("/api/getUserId", { username });
+        const response = await axios.post(`${VITE_URL}/api/getUserId`, {
+          username,
+        });
         if (response.status === 200) {
           setUser_id(response.data.user_id);
         } else {
@@ -43,7 +46,9 @@ const BlogListByUser = () => {
     if (user_id) {
       const fetchBlogs = async () => {
         try {
-          const response = await axios.post("/api/getBlogs", { user_id });
+          const response = await axios.post(`${VITE_URL}/api/getBlogs`, {
+            user_id,
+          });
           setBlogs(response.data.blogs || []); // Set blogs or empty array
         } catch (error) {
           console.error("Error fetching blogs:", error);

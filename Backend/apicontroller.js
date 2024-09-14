@@ -62,12 +62,13 @@ app.post("/api/signup", async (req, res) => {
       return res.status(400).json({ message: "Email already exists" });
     }
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 15);
-    console.log(username, "      ", email);
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const id = Math.floor(Math.random() * 1000) + 1;
+
     // Insert new user
     await promisePool.query(
-      "INSERT INTO users (username, password,email,role) VALUES (?, ?, ?, ?)",
-      [username, hashedPassword, email, "Blogger"]
+      "INSERT INTO users (id,username, password,email,role) VALUES (?, ?, ?, ?, ?)",
+      [id, username, hashedPassword, email, "Blogger"]
     );
 
     res.status(201).json({ message: "User created successfully" });
@@ -186,9 +187,10 @@ app.post("/api/addBlog", async (req, res) => {
   const { title, description, full_description, author, image_url, user_id } =
     req.body;
   try {
+    const blogId = Math.floor(Math.random() * 1000) + 1;
     const [result] = await promisePool.query(
-      "INSERT INTO blog (title, description, full_description, author, image_url, user_id) VALUES (?, ?, ?, ?, ?, ?)",
-      [title, description, full_description, author, image_url, user_id]
+      "INSERT INTO blog (id,title, description, full_description, author, image_url, user_id) VALUES (?,?, ?, ?, ?, ?, ?)",
+      [blogId, title, description, full_description, author, image_url, user_id]
     );
 
     if (result.affectedRows > 0) {

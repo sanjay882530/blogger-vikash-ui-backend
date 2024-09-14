@@ -1,12 +1,14 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+const VITE_BACKEND_URL =
+  import.meta.env.VITE_BACKEND_URL || "https://vikashblog.up.railway.app";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "https://vikashblog.up.railway.app",
+        target: VITE_BACKEND_URL,
         secure: false,
         changeOrigin: true,
       },

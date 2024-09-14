@@ -30,10 +30,10 @@ app.use(express.json());
 
 // Database connection
 const pool = mysql.createPool({
-  host: "152.58.181.202",
+  host: "mysql.railway.internal",
   user: "root",
-  password: "root",
-  database: "studentdb",
+  password: "jEHnNFEATIXFmlIdZLMGhkJWYQvikcMf",
+  database: "railway",
 });
 
 const promisePool = pool.promise();

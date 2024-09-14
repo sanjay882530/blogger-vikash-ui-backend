@@ -30,7 +30,7 @@ app.use(express.json());
 
 // Database connection
 const pool = mysql.createPool({
-  host: "localhost",
+  host: "152.58.181.202",
   user: "root",
   password: "root",
   database: "studentdb",

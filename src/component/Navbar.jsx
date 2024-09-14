@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from "react";
 import {
   MDBContainer,
   MDBNavbar,
@@ -7,64 +7,77 @@ import {
   MDBNavbarItem,
   MDBNavbarLink,
   MDBCollapse,
-  MDBIcon
-} from 'mdb-react-ui-kit';
-import { Link } from 'react-router-dom';
-import UserContext from '../context/UserContext';
+  MDBIcon,
+} from "mdb-react-ui-kit";
+import { Link, useNavigate } from "react-router-dom";
+import UserContext from "../context/UserContext";
 
 export default function Navbar() {
   const [openNav, setOpenNav] = useState(false);
-
   const { user, setUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
-  // Check if the user is stored in localStorage when the component mounts
   useEffect(() => {
-    const storedUser = localStorage.getItem('username');
+    const storedUser = localStorage.getItem("username");
     if (storedUser) {
-      setUser(storedUser); // Update the user context
+      setUser(storedUser);
     }
   }, [setUser]);
 
   const handleLogout = () => {
-    localStorage.clear(); // Clear localStorage
-    setUser(null); // Update user context
-    window.location.href = '/'; // Redirect to home after logout
+    localStorage.clear();
+    setUser(null);
+    navigate("/");
+  };
+
+  const handleLinkClick = () => {
+    setOpenNav(false); // Close the menu when a link is clicked
   };
 
   return (
-    <MDBNavbar className="" expand='lg' bgColor='dark'>
+    <MDBNavbar expand="lg" bgColor="dark" dark>
       <MDBContainer fluid>
-        <Link className="navimage" to='/'>
-          <img src='/sanjay.png' alt="Logo" width={200} height={25} />
+        <Link className="navbar-brand" to="/">
+          <img src="/sanjay.png" alt="Logo" width={200} height={25} />
         </Link>
         <MDBNavbarToggler
-          type='button'
-          aria-expanded='false'
-          aria-label='Toggle navigation'
+          type="button"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
           onClick={() => setOpenNav(!openNav)}
         >
-          <MDBIcon icon='bars' fas />
+          <MDBIcon icon="bars" fas />
         </MDBNavbarToggler>
-        <MDBCollapse navbar show={openNav}>
-          <MDBNavbarNav>
+        <MDBCollapse navbar open={openNav}>
+          <MDBNavbarNav right fullWidth={false}>
             <MDBNavbarItem>
-              <MDBNavbarLink active aria-current='page' href='/'>
-                <strong style={{ color: '#e6ffff' }}>Home</strong>
+              <MDBNavbarLink
+                active
+                aria-current="page"
+                href="/"
+                onClick={handleLinkClick}
+              >
+                <strong className="text-light">Home</strong>
               </MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <MDBNavbarLink href='/viewBlogs'>
-                <strong style={{ color: '#e6ffff' }}>Blog</strong>
+              <MDBNavbarLink href="/viewBlogs" onClick={handleLinkClick}>
+                <strong className="text-light">Blog</strong>
               </MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>
               {user ? (
-                <MDBNavbarLink onClick={handleLogout}>
-                  <strong style={{ color: '#e6ffff' }}>Logout</strong>
+                <MDBNavbarLink
+                  onClick={() => {
+                    handleLogout();
+                    handleLinkClick();
+                  }}
+                >
+                  <strong className="text-light">Logout</strong>
                 </MDBNavbarLink>
               ) : (
-                <MDBNavbarLink href='/login'>
-                  <strong style={{ color: '#e6ffff' }}>Login</strong>
+                <MDBNavbarLink href="/login" onClick={handleLinkClick}>
+                  <strong className="text-light">Login</strong>
                 </MDBNavbarLink>
               )}
             </MDBNavbarItem>

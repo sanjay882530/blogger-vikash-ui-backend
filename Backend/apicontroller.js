@@ -11,6 +11,7 @@ const port = process.env.PORT || 3000;
 const allowedOrigins = [
   "https://blogger-vikash-ui-backend.vercel.app",
   "https://vikashblog.up.railway.app",
+  "http:localhost:5173",
 ];
 app.use(
   cors({

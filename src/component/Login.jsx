@@ -11,6 +11,10 @@ import { useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext";
+// import dotenv from "dotenv";
+// dotenv.config();
+// const VITE_URL =
+//   process.env.VITE_BACKEND_URL || "https://vikashblog.up.railway.app";
 
 function Login() {
   const [username, setUsername] = useState("");
@@ -24,10 +28,14 @@ function Login() {
     e.preventDefault();
     setUser(username);
     try {
-      const response = await axios.post("/api/login", {
-        username,
-        password,
-      });
+      //const response = await axios.post(`${VITE_URL}/api/login`, {
+      const response = await axios.post(
+        "https://vikashblog.up.railway.app/api/login",
+        {
+          username,
+          password,
+        }
+      );
       if (response.status === 200) {
         setToken(response.data.token);
         setMessage({ text: "Login successful!", color: "green" });

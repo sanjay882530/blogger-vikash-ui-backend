@@ -64,7 +64,9 @@ function Signup() {
 
   const checkEmail = async () => {
     try {
-      const response = await axios.post(`${VITE_URL}api/checkEmail`, { email });
+      const response = await axios.post(`${VITE_URL}/api/checkEmail`, {
+        email,
+      });
       if (response.status === 200) {
         setEmailError("");
       } else {

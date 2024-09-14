@@ -28,14 +28,11 @@ function Login() {
     e.preventDefault();
     setUser(username);
     try {
-      //const response = await axios.post(`${VITE_URL}/api/login`, {
-      const response = await axios.post(
-        "https://vikashblog.up.railway.app/api/login",
-        {
-          username,
-          password,
-        }
-      );
+      const response = await axios.post(`${VITE_URL}/api/login`, {
+        // const response = await axios.post("https://vikashblog.up.railway.app/api/login", {
+        username,
+        password,
+      });
       if (response.status === 200) {
         setToken(response.data.token);
         setMessage({ text: "Login successful!", color: "green" });

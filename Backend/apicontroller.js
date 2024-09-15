@@ -257,9 +257,9 @@ app.post("/api/forgotPassword", async (req, res) => {
 });
 
 async function initializeCounterTable() {
-  const connection = pool.getConnection();
+  const poolcreate = pool.promise();
   try {
-    await connection.query(`
+    await poolcreate.query(`
           CREATE TABLE IF NOT EXISTS user_id_counter (
             id INT NOT NULL AUTO_INCREMENT,
             last_id INT NOT NULL DEFAULT 0,
@@ -268,40 +268,39 @@ async function initializeCounterTable() {
         `);
 
     // Insert initial row if the table is empty
-    await connection.query(`
+    await poolcreate.query(`
           INSERT INTO user_id_counter (id, last_id)
           SELECT 1, 0
           WHERE NOT EXISTS (SELECT * FROM user_id_counter)
         `);
   } finally {
-    connection.release();
+    poolcreate.release();
   }
 }
 
 // Function to get the next user ID
-function getNextUserId() {
-  const connection = pool.getConnection();
+async function getNextUserId() {
   try {
-    connection.beginTransaction();
+    await promisePool.beginTransaction();
 
-    const [rows] = connection.query(
+    const [rows] = await promisePool.query(
       "UPDATE user_id_counter SET last_id = last_id + 1 WHERE id = 1"
     );
     if (rows.affectedRows === 0) {
       throw new Error("Failed to update user ID counter");
     }
 
-    const [result] = connection.query(
+    const [result] = await promisePool.query(
       "SELECT last_id FROM user_id_counter WHERE id = 1"
     );
     const newUserId = result[0].last_id;
 
-    connection.commit();
+    await promisePool.commit();
     return newUserId;
   } catch (error) {
-    connection.rollback();
+    await promisePool.rollback();
     throw error;
   } finally {
-    connection.release();
+    await promisePool.release();
   }
 }

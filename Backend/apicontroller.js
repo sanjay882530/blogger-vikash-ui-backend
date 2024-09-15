@@ -6,13 +6,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
 // Enable CORS for all origins
-const allowedOrigins = [
-  "https://blogger-vikash-ui-backend.vercel.app",
-  "https://vikashblog.up.railway.app",
-  "http:localhost:5173",
-];
+const allowedOrigins = ["http://localhost:3000/api", "http://localhost:5173"];
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -29,11 +25,12 @@ dotenv.config();
 // Middleware
 app.use(express.json());
 
+// Database connection
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || "mysql.railway.internal",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASSWORD || "jEHnNFEATIXFmlIdZLMGhkJWYQvikcMf",
-  database: process.env.DB_NAME || "railway",
+  host: "localhost",
+  user: "root",
+  password: "root",
+  database: "blogger",
 });
 
 const promisePool = pool.promise();
@@ -45,6 +42,7 @@ app.post("/api/signup", async (req, res) => {
     return res.status(400).json({ error: "All fields are required" });
   }
   try {
+    // Check if user already exists
     const [rows] = await promisePool.query(
       "SELECT * FROM users WHERE username = ?",
       [username]
@@ -52,7 +50,6 @@ app.post("/api/signup", async (req, res) => {
     if (rows.length > 0) {
       return res.status(400).json({ message: "Username already exists" });
     }
-
     const [erows] = await promisePool.query(
       "SELECT * FROM users WHERE email = ?",
       [email]
@@ -60,13 +57,13 @@ app.post("/api/signup", async (req, res) => {
     if (erows.length > 0) {
       return res.status(400).json({ message: "Email already exists" });
     }
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const id = await getNextUserId();
-
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 15);
+    console.log(username, "      ", email);
+    // Insert new user
     await promisePool.query(
-      "INSERT INTO users (id,username, password,email,role) VALUES (?, ?, ?, ?, ?)",
-      [id, username, hashedPassword, email, "Blogger"]
+      "INSERT INTO users (username, password,email,role) VALUES (?, ?, ?, ?)",
+      [username, hashedPassword, email, "Blogger"]
     );
 
     res.status(201).json({ message: "User created successfully" });
@@ -83,6 +80,7 @@ app.post("/api/login", async (req, res) => {
     return res.status(400).json({ error: "All fields are required" });
   }
   try {
+    // Check if user exists
     const [rows] = await promisePool.query(
       "SELECT * FROM users WHERE username = ?",
       [username]
@@ -92,14 +90,18 @@ app.post("/api/login", async (req, res) => {
     }
 
     const user = rows[0];
+
+    // Check password
     const isMatch = bcrypt.compareSync(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid username or password" });
     }
 
+    // Generate JWT token
+    //console.log('secret key', process.env.JWT_SECRET);
     const token = jwt.sign(
       { id: user.id, username: user.username },
-      process.env.JWT_SECRET, // Fixed here
+      "process.env.JWT_SECRET",
       { expiresIn: "1h" }
     );
 
@@ -109,7 +111,6 @@ app.post("/api/login", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
-
 app.get("/api", async (req, res) => {
   try {
     res.json({ statusCode: "1", message: "hello world" });
@@ -117,6 +118,10 @@ app.get("/api", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
+});
+
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
 });
 
 app.post("/api/checkEmail", async (req, res) => {
@@ -177,10 +182,9 @@ app.post("/api/addBlog", async (req, res) => {
   const { title, description, full_description, author, image_url, user_id } =
     req.body;
   try {
-    const blogId = Math.floor(Math.random() * 1000) + 1;
     const [result] = await promisePool.query(
-      "INSERT INTO blog (id,title, description, full_description, author, image_url, user_id) VALUES (?,?, ?, ?, ?, ?, ?)",
-      [blogId, title, description, full_description, author, image_url, user_id]
+      "INSERT INTO blog (title, description, full_description, author, image_url, user_id) VALUES (?, ?, ?, ?, ?, ?)",
+      [title, description, full_description, author, image_url, user_id]
     );
 
     if (result.affectedRows > 0) {
@@ -240,63 +244,4 @@ app.get("/api/getBlogById/:id", async (req, res) => {
     console.error(error);
     return res.status(500).json({ message: "Server error" });
   }
-});
-
-app.post("/api/forgotPassword", async (req, res) => {
-  const { username } = req.body();
-});
-
-// Initialize counter table
-async function initializeCounterTable() {
-  const connection = await pool.getConnection(); // Use await here
-  try {
-    await connection.query(`
-        CREATE TABLE IF NOT EXISTS user_id_counter (
-          id INT NOT NULL AUTO_INCREMENT,
-          last_id INT NOT NULL DEFAULT 0,
-          PRIMARY KEY (id)
-        )
-      `);
-
-    await connection.query(`
-        INSERT INTO user_id_counter (id, last_id)
-        SELECT 1, 0
-        WHERE NOT EXISTS (SELECT * FROM user_id_counter)
-      `);
-  } finally {
-    connection.release(); // Ensure connection is released after query
-  }
-}
-
-// Function to get the next user ID
-async function getNextUserId() {
-  const connection = await pool.getConnection(); // Fixed with 'await'
-  try {
-    await connection.beginTransaction();
-    const [rows] = await connection.query(
-      "UPDATE user_id_counter SET last_id = last_id + 1 WHERE id = 1"
-    );
-    if (rows.affectedRows === 0) {
-      throw new Error("Failed to update user ID counter");
-    }
-
-    const [result] = await connection.query(
-      "SELECT last_id FROM user_id_counter WHERE id = 1"
-    );
-    const newUserId = result[0].last_id;
-    await connection.commit();
-    return newUserId;
-  } catch (error) {
-    await connection.rollback();
-    throw error;
-  } finally {
-    connection.release();
-  }
-}
-
-// Initialize counter table on app start
-initializeCounterTable().catch(console.error);
-
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
 });

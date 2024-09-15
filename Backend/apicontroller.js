@@ -4,6 +4,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import dotenv from "dotenv";
+import getNextUserId from "./utils.js";
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
@@ -63,8 +64,8 @@ app.post("/api/signup", async (req, res) => {
     }
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
-    const id = Math.floor(Math.random() * 1000) + 1;
-
+    //const id = Math.floor(Math.random() * 1000) + 1;
+    const id = getNextUserId.getNextUserId();
     // Insert new user
     await promisePool.query(
       "INSERT INTO users (id,username, password,email,role) VALUES (?, ?, ?, ?, ?)",
@@ -250,4 +251,8 @@ app.get("/api/getBlogById/:id", async (req, res) => {
     console.error(error);
     return res.status(500).json({ message: "Server error" });
   }
+});
+
+app.post("/api/forgotPassword", async (req, res) => {
+  const { username } = req.body();
 });

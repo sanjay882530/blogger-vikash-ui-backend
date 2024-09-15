@@ -1,56 +1,59 @@
-import React from "react";
-import { MDBRow, MDBBtn } from "mdb-react-ui-kit";
+import React, { useState } from "react";
+import {
+  MDBNavbar,
+  MDBContainer,
+  MDBNavbarToggler,
+  MDBCollapse,
+  MDBNavbarNav,
+  MDBNavbarItem,
+  MDBIcon,
+} from "mdb-react-ui-kit";
 import { Link } from "react-router-dom";
 
 function LeftHeader() {
+  const [openNav, setOpenNav] = useState(false);
+
+  const toggleNavbar = () => {
+    setOpenNav(!openNav);
+  };
+
   return (
-    <div
-      style={{
-        left: 0,
-        top: 60,
-        height: "100%",
-        width: "200px",
-        backgroundColor: "#f8f9fa",
-      }}
-    >
-      <Link to="/dashboard">
-        <h5 className="p-4"> Blog Modules</h5>
-      </Link>
-      <MDBRow className="d-flex flex-column align-items-start">
-        <ul className="list-unstyled">
-          <li className="mb-3">
-            <Link
-              to="/addBlog"
-              style={{ color: "white", textDecoration: "none" }}
-            >
-              <MDBBtn color="primary" className="w-100">
+    <MDBNavbar expand="lg" dark bgColor="dark" className="mb-3">
+      <MDBContainer fluid>
+        <MDBNavbarToggler
+          type="button"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+          onClick={toggleNavbar}
+        >
+          <MDBIcon icon="bars" fas />
+        </MDBNavbarToggler>
+        <MDBCollapse navbar open={openNav}>
+          <MDBNavbarNav>
+            <MDBNavbarItem>
+              <Link to="/dashboard" className="nav-link text-white">
+                Dashboard
+              </Link>
+            </MDBNavbarItem>
+            <MDBNavbarItem>
+              <Link to="/addBlog" className="nav-link text-white">
                 Add Blog
-              </MDBBtn>
-            </Link>
-          </li>
-          <li className="mb-3">
-            <Link
-              to="/blogs"
-              style={{ color: "white", textDecoration: "none" }}
-            >
-              <MDBBtn color="primary" className="w-100">
+              </Link>
+            </MDBNavbarItem>
+            <MDBNavbarItem>
+              <Link to="/blogs" className="nav-link text-white">
                 View Blog
-              </MDBBtn>
-            </Link>
-          </li>
-          <li className="mb-3">
-            <Link
-              to="/blogById"
-              style={{ color: "white", textDecoration: "none" }}
-            >
-              <MDBBtn color="primary" className="w-100">
+              </Link>
+            </MDBNavbarItem>
+            <MDBNavbarItem>
+              <Link to="/blogById" className="nav-link text-white">
                 Edit Blog
-              </MDBBtn>
-            </Link>
-          </li>
-        </ul>
-      </MDBRow>
-    </div>
+              </Link>
+            </MDBNavbarItem>
+          </MDBNavbarNav>
+        </MDBCollapse>
+      </MDBContainer>
+    </MDBNavbar>
   );
 }
 

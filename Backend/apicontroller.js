@@ -4,7 +4,6 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import dotenv from "dotenv";
-import getNextUserId from "./utils.js";
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
@@ -65,7 +64,7 @@ app.post("/api/signup", async (req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
     //const id = Math.floor(Math.random() * 1000) + 1;
-    const id = getNextUserId.getNextUserId();
+    const id = getNextUserId();
     // Insert new user
     await promisePool.query(
       "INSERT INTO users (id,username, password,email,role) VALUES (?, ?, ?, ?, ?)",
@@ -256,3 +255,53 @@ app.get("/api/getBlogById/:id", async (req, res) => {
 app.post("/api/forgotPassword", async (req, res) => {
   const { username } = req.body();
 });
+
+async function initializeCounterTable() {
+  const connection = pool.getConnection();
+  try {
+    await connection.query(`
+          CREATE TABLE IF NOT EXISTS user_id_counter (
+            id INT NOT NULL AUTO_INCREMENT,
+            last_id INT NOT NULL DEFAULT 0,
+            PRIMARY KEY (id)
+          )
+        `);
+
+    // Insert initial row if the table is empty
+    await connection.query(`
+          INSERT INTO user_id_counter (id, last_id)
+          SELECT 1, 0
+          WHERE NOT EXISTS (SELECT * FROM user_id_counter)
+        `);
+  } finally {
+    connection.release();
+  }
+}
+
+// Function to get the next user ID
+function getNextUserId() {
+  const connection = pool.getConnection();
+  try {
+    connection.beginTransaction();
+
+    const [rows] = connection.query(
+      "UPDATE user_id_counter SET last_id = last_id + 1 WHERE id = 1"
+    );
+    if (rows.affectedRows === 0) {
+      throw new Error("Failed to update user ID counter");
+    }
+
+    const [result] = connection.query(
+      "SELECT last_id FROM user_id_counter WHERE id = 1"
+    );
+    const newUserId = result[0].last_id;
+
+    connection.commit();
+    return newUserId;
+  } catch (error) {
+    connection.rollback();
+    throw error;
+  } finally {
+    connection.release();
+  }
+}

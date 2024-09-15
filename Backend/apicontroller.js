@@ -248,23 +248,23 @@ app.post("/api/forgotPassword", async (req, res) => {
 
 // Initialize counter table
 async function initializeCounterTable() {
-  const connection = pool.getConnection();
+  const connection = await pool.getConnection(); // Use await here
   try {
     await connection.query(`
-      CREATE TABLE IF NOT EXISTS user_id_counter (
-        id INT NOT NULL AUTO_INCREMENT,
-        last_id INT NOT NULL DEFAULT 0,
-        PRIMARY KEY (id)
-      )
-    `);
+        CREATE TABLE IF NOT EXISTS user_id_counter (
+          id INT NOT NULL AUTO_INCREMENT,
+          last_id INT NOT NULL DEFAULT 0,
+          PRIMARY KEY (id)
+        )
+      `);
 
     await connection.query(`
-      INSERT INTO user_id_counter (id, last_id)
-      SELECT 1, 0
-      WHERE NOT EXISTS (SELECT * FROM user_id_counter)
-    `);
+        INSERT INTO user_id_counter (id, last_id)
+        SELECT 1, 0
+        WHERE NOT EXISTS (SELECT * FROM user_id_counter)
+      `);
   } finally {
-    connection.release();
+    connection.release(); // Ensure connection is released after query
   }
 }
 

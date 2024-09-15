@@ -75,14 +75,17 @@ const BlogListByUser = () => {
             blogs.map((blog) => (
               <MDBCol md="4" key={blog.id} className="mb-3">
                 <MDBCard className="shadow-sm">
-                  <MDBCardImage
-                    src={blog.image_url}
-                    position="top"
-                    alt={blog.title}
-                  />
                   <MDBCardBody>
                     <MDBCardTitle>{blog.title}</MDBCardTitle>
+
                     <MDBCardText>{blog.description}</MDBCardText>
+                    <MDBCardImage
+                      src={blog.image_url}
+                      position="top"
+                      alt={blog.title}
+                      style={{ width: "100%", height: "30%" }} // Ensures the image fills the container width
+                    />
+
                     <MDBCardText>
                       <small className="text-muted">
                         Author: {blog.author}

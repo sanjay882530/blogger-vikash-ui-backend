@@ -31,27 +31,27 @@ async function initializeCounterTable() {
 }
 
 // Function to get the next user ID
-export async function getNextUserId() {
+export default function getNextUserId() {
   const connection = pool.getConnection();
   try {
-    await connection.beginTransaction();
+    connection.beginTransaction();
 
-    const [rows] = await connection.query(
+    const [rows] = connection.query(
       "UPDATE user_id_counter SET last_id = last_id + 1 WHERE id = 1"
     );
     if (rows.affectedRows === 0) {
       throw new Error("Failed to update user ID counter");
     }
 
-    const [result] = await connection.query(
+    const [result] = connection.query(
       "SELECT last_id FROM user_id_counter WHERE id = 1"
     );
     const newUserId = result[0].last_id;
 
-    await connection.commit();
+    connection.commit();
     return newUserId;
   } catch (error) {
-    await connection.rollback();
+    connection.rollback();
     throw error;
   } finally {
     connection.release();

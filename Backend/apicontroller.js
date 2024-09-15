@@ -29,12 +29,11 @@ dotenv.config();
 // Middleware
 app.use(express.json());
 
-// Database connection
 const pool = mysql.createPool({
-  host: "mysql.railway.internal",
-  user: "root",
-  password: "jEHnNFEATIXFmlIdZLMGhkJWYQvikcMf",
-  database: "railway",
+  host: process.env.DB_HOST || "mysql.railway.internal",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "jEHnNFEATIXFmlIdZLMGhkJWYQvikcMf",
+  database: process.env.DB_NAME || "railway",
 });
 
 const promisePool = pool.promise();
@@ -46,7 +45,6 @@ app.post("/api/signup", async (req, res) => {
     return res.status(400).json({ error: "All fields are required" });
   }
   try {
-    // Check if user already exists
     const [rows] = await promisePool.query(
       "SELECT * FROM users WHERE username = ?",
       [username]
@@ -54,6 +52,7 @@ app.post("/api/signup", async (req, res) => {
     if (rows.length > 0) {
       return res.status(400).json({ message: "Username already exists" });
     }
+
     const [erows] = await promisePool.query(
       "SELECT * FROM users WHERE email = ?",
       [email]
@@ -61,11 +60,10 @@ app.post("/api/signup", async (req, res) => {
     if (erows.length > 0) {
       return res.status(400).json({ message: "Email already exists" });
     }
-    // Hash the password
+
     const hashedPassword = await bcrypt.hash(password, 10);
-    //const id = Math.floor(Math.random() * 1000) + 1;
-    const id = getNextUserId();
-    // Insert new user
+    const id = await getNextUserId();
+
     await promisePool.query(
       "INSERT INTO users (id,username, password,email,role) VALUES (?, ?, ?, ?, ?)",
       [id, username, hashedPassword, email, "Blogger"]
@@ -85,7 +83,6 @@ app.post("/api/login", async (req, res) => {
     return res.status(400).json({ error: "All fields are required" });
   }
   try {
-    // Check if user exists
     const [rows] = await promisePool.query(
       "SELECT * FROM users WHERE username = ?",
       [username]
@@ -95,18 +92,14 @@ app.post("/api/login", async (req, res) => {
     }
 
     const user = rows[0];
-
-    // Check password
     const isMatch = bcrypt.compareSync(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid username or password" });
     }
 
-    // Generate JWT token
-    //console.log('secret key', process.env.JWT_SECRET);
     const token = jwt.sign(
       { id: user.id, username: user.username },
-      "process.env.JWT_SECRET",
+      process.env.JWT_SECRET, // Fixed here
       { expiresIn: "1h" }
     );
 
@@ -116,6 +109,7 @@ app.post("/api/login", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
 app.get("/api", async (req, res) => {
   try {
     res.json({ statusCode: "1", message: "hello world" });
@@ -123,10 +117,6 @@ app.get("/api", async (req, res) => {
   } catch (error) {
     console.log(error);
   }
-});
-
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
 });
 
 app.post("/api/checkEmail", async (req, res) => {
@@ -256,51 +246,57 @@ app.post("/api/forgotPassword", async (req, res) => {
   const { username } = req.body();
 });
 
+// Initialize counter table
 async function initializeCounterTable() {
-  const poolcreate = pool.promise();
+  const connection = pool.getConnection();
   try {
-    await poolcreate.query(`
-          CREATE TABLE IF NOT EXISTS user_id_counter (
-            id INT NOT NULL AUTO_INCREMENT,
-            last_id INT NOT NULL DEFAULT 0,
-            PRIMARY KEY (id)
-          )
-        `);
+    await connection.query(`
+      CREATE TABLE IF NOT EXISTS user_id_counter (
+        id INT NOT NULL AUTO_INCREMENT,
+        last_id INT NOT NULL DEFAULT 0,
+        PRIMARY KEY (id)
+      )
+    `);
 
-    // Insert initial row if the table is empty
-    await poolcreate.query(`
-          INSERT INTO user_id_counter (id, last_id)
-          SELECT 1, 0
-          WHERE NOT EXISTS (SELECT * FROM user_id_counter)
-        `);
+    await connection.query(`
+      INSERT INTO user_id_counter (id, last_id)
+      SELECT 1, 0
+      WHERE NOT EXISTS (SELECT * FROM user_id_counter)
+    `);
   } finally {
-    poolcreate.release();
+    connection.release();
   }
 }
 
 // Function to get the next user ID
 async function getNextUserId() {
+  const connection = await pool.getConnection(); // Fixed with 'await'
   try {
-    await promisePool.beginTransaction();
-
-    const [rows] = await promisePool.query(
+    await connection.beginTransaction();
+    const [rows] = await connection.query(
       "UPDATE user_id_counter SET last_id = last_id + 1 WHERE id = 1"
     );
     if (rows.affectedRows === 0) {
       throw new Error("Failed to update user ID counter");
     }
 
-    const [result] = await promisePool.query(
+    const [result] = await connection.query(
       "SELECT last_id FROM user_id_counter WHERE id = 1"
     );
     const newUserId = result[0].last_id;
-
-    await promisePool.commit();
+    await connection.commit();
     return newUserId;
   } catch (error) {
-    await promisePool.rollback();
+    await connection.rollback();
     throw error;
   } finally {
-    await promisePool.release();
+    connection.release();
   }
 }
+
+// Initialize counter table on app start
+initializeCounterTable().catch(console.error);
+
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});

@@ -41,30 +41,28 @@ export default function ImageSlide() {
     <MDBContainer className="my-5">
       <MDBCard className="p-4">
         <MDBRow className="align-items-center">
-          <div className="slideshow-container">
-            <div className="mySlides fade" style={{ display: "block" }}>
-              <div className="numbertext">1 / 4</div>
-              <img src="img1.jpg" alt="Slide 1" />
-              <div className="text">Caption Text</div>
-            </div>
+          <div className="mySlides fade" style={{ display: "block" }}>
+            <div className="numbertext">1 / 4</div>
+            <img src="img1.jpg" alt="Slide 1" />
+            <div className="text">Caption Text</div>
+          </div>
 
-            <div className="mySlides fade">
-              <div className="numbertext">2 / 4</div>
-              <img src="img2.jpg" alt="Slide 2" />
-              <div className="text">Caption Two</div>
-            </div>
+          <div className="mySlides fade">
+            <div className="numbertext">2 / 4</div>
+            <img src="img2.jpg" alt="Slide 2" />
+            <div className="text">Caption Two</div>
+          </div>
 
-            <div className="mySlides fade">
-              <div className="numbertext">3 / 4</div>
-              <img src="img3.jpg" alt="Slide 3" />
-              <div className="text">Caption Three</div>
-            </div>
+          <div className="mySlides fade">
+            <div className="numbertext">3 / 4</div>
+            <img src="img3.jpg" alt="Slide 3" />
+            <div className="text">Caption Three</div>
+          </div>
 
-            <div className="mySlides fade">
-              <div className="numbertext">4 / 4</div>
-              <img src="img4.jpg" alt="Slide 4" />
-              <div className="text">Caption Four</div>
-            </div>
+          <div className="mySlides fade">
+            <div className="numbertext">4 / 4</div>
+            <img src="img4.jpg" alt="Slide 4" />
+            <div className="text">Caption Four</div>
           </div>
 
           <div style={{ textAlign: "center" }}>

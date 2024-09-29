@@ -8,6 +8,10 @@ import {
   MDBNavbarLink,
   MDBCollapse,
   MDBIcon,
+  MDBDropdown,
+  MDBDropdownToggle,
+  MDBDropdownMenu,
+  MDBDropdownItem,
 } from "mdb-react-ui-kit";
 import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext";
@@ -63,9 +67,116 @@ export default function Navbar() {
               </MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>
-              <MDBNavbarLink href="/subjects" onClick={handleLinkClick}>
-                <strong className="text-light">Subjects</strong>
-              </MDBNavbarLink>
+              <MDBDropdown>
+                <MDBDropdownToggle
+                  tag="a"
+                  className="nav-link text-light"
+                  role="button"
+                >
+                  <strong>Subjects</strong>
+                </MDBDropdownToggle>
+                <MDBDropdownMenu className="text-dark">
+                  <MDBDropdownItem link>
+                    <MDBNavbarLink
+                      className="text-black"
+                      href="/subjects/circuits"
+                      onClick={handleLinkClick}
+                    >
+                      Circuits
+                    </MDBNavbarLink>
+                  </MDBDropdownItem>
+                  <MDBDropdownItem link>
+                    <MDBNavbarLink
+                      className="text-black"
+                      href="/subjects/Electromagnetism"
+                      onClick={handleLinkClick}
+                    >
+                      Electromagnetism
+                    </MDBNavbarLink>
+                  </MDBDropdownItem>
+                  <MDBDropdownItem link>
+                    <MDBNavbarLink
+                      className="text-black"
+                      href="/subjects/physics"
+                      onClick={handleLinkClick}
+                    >
+                      Physics
+                    </MDBNavbarLink>
+                  </MDBDropdownItem>
+                  <MDBDropdownItem link>
+                    <MDBNavbarLink
+                      className="text-black"
+                      href="/subjects/control-System"
+                      onClick={handleLinkClick}
+                    >
+                      Control System
+                    </MDBNavbarLink>
+                  </MDBDropdownItem>
+                  <MDBDropdownItem link>
+                    <MDBNavbarLink
+                      className="text-black"
+                      href="/subjects/Electronics Engineering"
+                      onClick={handleLinkClick}
+                    >
+                      Electronics Engineering
+                    </MDBNavbarLink>
+                  </MDBDropdownItem>
+                  <MDBDropdownItem link>
+                    <MDBNavbarLink
+                      className="text-black"
+                      href="/subjects/Robotics"
+                      onClick={handleLinkClick}
+                    >
+                      Robotics
+                    </MDBNavbarLink>
+                  </MDBDropdownItem>
+                  <MDBDropdownItem link>
+                    <MDBNavbarLink
+                      className="text-black"
+                      href="/subjects/mathematics"
+                      onClick={handleLinkClick}
+                    >
+                      Mathematics
+                    </MDBNavbarLink>
+                  </MDBDropdownItem>
+                  <MDBDropdownItem link>
+                    <MDBNavbarLink
+                      className="text-black"
+                      href="/subjects/engineering-Drawing"
+                      onClick={handleLinkClick}
+                    >
+                      Engineering Drawing
+                    </MDBNavbarLink>
+                  </MDBDropdownItem>
+                  <MDBDropdownItem link>
+                    <MDBNavbarLink
+                      className="text-black"
+                      href="/subjects/microprocessor"
+                      onClick={handleLinkClick}
+                    >
+                      Microprocessor
+                    </MDBNavbarLink>
+                  </MDBDropdownItem>
+                  <MDBDropdownItem link>
+                    <MDBNavbarLink
+                      className="text-black"
+                      href="/subjects/power-electronics"
+                      onClick={handleLinkClick}
+                    >
+                      power electronics
+                    </MDBNavbarLink>
+                  </MDBDropdownItem>
+                  <MDBDropdownItem link>
+                    <MDBNavbarLink
+                      className="text-black"
+                      href="/subjects/Electrical-machines"
+                      onClick={handleLinkClick}
+                    >
+                      Electrical machines
+                    </MDBNavbarLink>
+                  </MDBDropdownItem>
+                </MDBDropdownMenu>
+              </MDBDropdown>
             </MDBNavbarItem>
             <MDBNavbarItem>
               <MDBNavbarLink href="/viewBlogs" onClick={handleLinkClick}>

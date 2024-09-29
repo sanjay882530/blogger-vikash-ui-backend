@@ -38,6 +38,7 @@
   }
   
   .textcolumn{
-    margin-top: 60px; /* Pushes content below the circle */
-    padding: 20px;
+    margin-top: 6px; /* Pushes content below the circle */
+    padding-left: 10%;
+    padding-right: 5%;
   }

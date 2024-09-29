@@ -38,7 +38,10 @@ export default function Navbar() {
     <MDBNavbar expand="lg" bgColor="dark" dark>
       <MDBContainer fluid>
         <Link className="navbar-brand" to="/">
-          <img src="/sanjay.png" alt="Logo" width={200} height={25} />
+          {/* <img src="/sanjay.png" alt="Logo" width={200} height={25} /> */}
+          <h3>
+            <strong>Electronic Tech </strong>
+          </h3>
         </Link>
         <MDBNavbarToggler
           type="button"
@@ -52,12 +55,16 @@ export default function Navbar() {
           <MDBNavbarNav right fullWidth={false}>
             <MDBNavbarItem>
               <MDBNavbarLink
-                active
                 aria-current="page"
                 href="/"
                 onClick={handleLinkClick}
               >
                 <strong className="text-light">Home</strong>
+              </MDBNavbarLink>
+            </MDBNavbarItem>
+            <MDBNavbarItem>
+              <MDBNavbarLink href="/subjects" onClick={handleLinkClick}>
+                <strong className="text-light">Subjects</strong>
               </MDBNavbarLink>
             </MDBNavbarItem>
             <MDBNavbarItem>

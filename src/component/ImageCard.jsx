@@ -7,7 +7,7 @@ function ImageCard() {
       <MDBCard className="p-4">
         <MDBRow className="align-items-center">
           {/* Image on one side */}
-          <MDBCol md="3">
+          {/* <MDBCol md="3">
             <div className="circle">
               {
                 <img
@@ -17,11 +17,9 @@ function ImageCard() {
                 />
               }
             </div>
-          </MDBCol>
+          </MDBCol> */}
 
-          <MDBCol md="6" className="textcolumn">
-            <br />
-            <br />
+          <MDBCol className="textcolumn">
             <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100"></div>
             <br />
             <p className="text-s">

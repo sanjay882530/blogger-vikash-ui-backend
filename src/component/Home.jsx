@@ -2,14 +2,14 @@ import React from "react";
 import { MDBContainer, MDBRow, MDBCol, MDBCard } from "mdb-react-ui-kit";
 import ImageCard from "./ImageCard";
 import ImageSlide from "./ImageSlide";
-
+import "./Home.css";
 function Home() {
   return (
-    <>
+    <div className="container-color">
       <ImageSlide />
       <ImageCard />
       <ImageCard />
-      <MDBContainer className="my-5">
+      <MDBContainer className="my-5 ">
         <MDBCard className="p-4">
           <MDBRow className="align-items-center">
             {/* Image on one side */}
@@ -64,7 +64,7 @@ function Home() {
           </MDBRow>
         </MDBCard>
       </MDBContainer>
-    </>
+    </div>
   );
 }
 

@@ -9,7 +9,11 @@ export default function Circuits() {
           <h3 className="text-center text-blue-800">
             <strong>Circuits</strong>
           </h3>
-          <img src="/img1.jpg" alt="circuits graph" className="circuits-img" />
+          <img
+            src="/img1 (4).jpg"
+            alt="circuits graph"
+            className="circuits-img"
+          />
           <p>
             A <b>circuit</b> refers to a closed loop or pathway that allows
             electric current to flow. The main components of a circuit usually

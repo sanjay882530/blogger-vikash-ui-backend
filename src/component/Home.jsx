@@ -4,15 +4,16 @@ import ImageCard from "./ImageCard";
 import ImageSlide from "./ImageSlide";
 import Notice from "./Notice";
 import "./Home.css";
+
 function Home() {
   return (
-    <div className="container-color">
+    <div className="container-color styles.animated__layers">
       <ImageSlide />
       <Notice />
       <ImageCard />
       <ImageCard />
-      <MDBContainer className="my-5 ">
-        <MDBCard className="p-4">
+      <MDBContainer className="my-5 gradient-bg">
+        <MDBCard className="p-4 gradient-bg">
           <MDBRow className="align-items-center">
             {/* Image on one side */}
             {/* <MDBCol md="3">

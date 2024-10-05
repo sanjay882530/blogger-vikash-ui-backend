@@ -1,3 +1,6 @@
-.container-color{
+/* .container-color{
     background-color: rgba(255, 255, 255, 0.87);
-}
+} */
+.gradient-bg {
+    background: linear-gradient(to right, #f6f7f3, #cad29c, #56b5d4);
+  }

@@ -7,13 +7,14 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./component/Home";
 import Navbar from "./component/Navbar";
 import AddBlog from "./component/AddBlog";
-import UserContextProvider from "./context/UserContaxtProvider";
+import UserContextProvider from "./context/UserContextProvider";
 import BlogListByUser from "./component/BlogListByUser";
 import BlogDashboard from "./component/BlogDashboard";
 import BlogList from "./component/BlogList";
 import Blog from "./component/Blog";
 import React from "react";
 import Circuits from "./component/pages/Circuits";
+
 function App() {
   return (
     <UserContextProvider>
@@ -29,7 +30,7 @@ function App() {
             <Route path="/blogs" element={<BlogListByUser />} />
             <Route path="/viewBlogs" element={<BlogList />} />
             <Route path="/blog/:id" element={<Blog />} />
-            <Route path="/subjects/circuits" element={<Circuits />} />
+            <Route path="/subjects/cuircits" element={<Circuits />} />
           </Routes>
         </>
       </Router>

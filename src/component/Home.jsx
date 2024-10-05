@@ -2,11 +2,13 @@ import React from "react";
 import { MDBContainer, MDBRow, MDBCol, MDBCard } from "mdb-react-ui-kit";
 import ImageCard from "./ImageCard";
 import ImageSlide from "./ImageSlide";
+import Notice from "./Notice";
 import "./Home.css";
 function Home() {
   return (
     <div className="container-color">
       <ImageSlide />
+      <Notice />
       <ImageCard />
       <ImageCard />
       <MDBContainer className="my-5 ">

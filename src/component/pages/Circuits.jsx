@@ -6,7 +6,7 @@ export default function Circuits() {
     <MDBContainer className="my-5">
       <MDBCard className="p-4">
         <MDBRow className="align-items-center">
-          <h3 className="text-center text-blue-800">
+          <h3 className="text-center text-blue-800 bg-slate-500">
             <strong>Circuits</strong>
           </h3>
           <img

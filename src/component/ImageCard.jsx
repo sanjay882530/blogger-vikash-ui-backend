@@ -3,8 +3,8 @@ import "./ImageCard.css"; // Import the CSS file for styling
 import { MDBContainer, MDBRow, MDBCol, MDBCard } from "mdb-react-ui-kit";
 function ImageCard() {
   return (
-    <MDBContainer className="my-5 gradient-bg">
-      <MDBCard className="p-1 gradient-bg">
+    <MDBContainer className="my-5 gradient-bg-image">
+      <MDBCard className="p-1 gradient-bg-image">
         <MDBRow className="align-items-center">
           {/* Image on one side */}
           {/* <MDBCol md="3">

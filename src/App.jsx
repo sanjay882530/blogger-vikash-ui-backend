@@ -30,7 +30,7 @@ function App() {
             <Route path="/blogs" element={<BlogListByUser />} />
             <Route path="/viewBlogs" element={<BlogList />} />
             <Route path="/blog/:id" element={<Blog />} />
-            <Route path="/subjects/cuircits" element={<Circuits />} />
+            <Route path="/subjects/circuits" element={<Circuits />} />
           </Routes>
         </>
       </Router>

@@ -1,5 +1,5 @@
 .cont-styles{
-    background-color: rgb(7, 6, 7);
+    background-color: rgb(244, 63, 8);
     border-radius: 15%;
 }
 .cont-styles h3{
@@ -7,14 +7,23 @@
     text-align: center;
     font-family: cursive;
 }
-.cont-styles marquee{
+.right-dir{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-style: italic;
     font-size: 1rem;
-    color: rgb(31, 11, 180);
+    color: rgb(1, 19, 19);
+}
+.left-dir{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: rgb(76, 12, 225);
 }
 .card-color{
     background-color: rgb(187, 185, 176);
     border-radius: 20%;
     
 }
+.gradient-bg {
+    background: linear-gradient(to right, #dbe9e6, #b6b7b2, #d9e056);
+  }

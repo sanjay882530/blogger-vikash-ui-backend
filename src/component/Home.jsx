@@ -7,13 +7,13 @@ import "./Home.css";
 
 function Home() {
   return (
-    <div className="container-color styles.animated__layers">
+    <div className="container-color ">
       <ImageSlide />
       <Notice />
       <ImageCard />
-      <ImageCard />
-      <MDBContainer className="my-5 gradient-bg">
-        <MDBCard className="p-4 gradient-bg">
+
+      <MDBContainer className="my-5 gradient-bg-home">
+        <MDBCard className="p-4 gradient-bg-home">
           <MDBRow className="align-items-center">
             {/* Image on one side */}
             {/* <MDBCol md="3">
